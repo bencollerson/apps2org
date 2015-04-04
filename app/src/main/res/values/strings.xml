@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 	<string name="other_apps_in_market">Other apps</string>
-	<string name="app_name">Apps2Org</string>
+    <string name="app_name">Apps2Org</string>
+    <!--FIXME app_name_fork-->
+    <string name="app_name_fork">Apps2Org fork by</string>
 	<string name="choose_labels_header">Choose labels</string>
 	<string name="alert_dialog_ok">OK</string>
 	<string name="alert_dialog_hide">Hide</string>
@@ -34,7 +36,7 @@
 	<string name="import_menu">Import</string>
 	<string name="export_error">Export error</string>
 	<string name="import_error">Import error</string>
-	<string name="sdcard_error">Sdcart error</string>
+	<string name="sdcard_error">Sdcard error</string>
 	<string name="directory_error">Directory error</string>
 	<string name="file_name">File name</string>
 	<string name="no_files_error">No files found in directory AppsOrganizer in your sd card</string>
@@ -62,7 +64,7 @@
 	<string name="choose_action">Choose action</string>
 	<string name="Application_not_found">Application not found</string>
 	<string name="Application_not_found_message">You need AndExplorer for select a file, you can download it from market (it\'s free)</string>
-	<string name="Open_market">Open market</string>
+	<string name="Open_market">Open Play Store</string>
 	<string name="select_jpg_bmp_title">File type error</string>
 	<string name="select_jpg_bmp">You must choose a png or jpg file</string>
 	<string name="Donate">Donate</string>

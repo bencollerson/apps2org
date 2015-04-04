@@ -1,21 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:orientation="vertical" android:layout_width="fill_parent"
-	android:layout_height="fill_parent">
-	<LinearLayout android:id="@+id/LinearLayout01"
-		android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:orientation="horizontal">
-		<ToggleButton android:id="@+id/appButton"
-			android:layout_width="fill_parent" android:checked="false"
-			android:layout_height="wrap_content" android:textOn="@string/tab_apps"
-			android:textOff="@string/tab_apps" android:layout_weight="1" />
-		<ToggleButton android:id="@+id/labelButton"
-			android:layout_width="fill_parent" android:checked="true"
-			android:layout_height="wrap_content" android:textOff="@string/tab_labels"
-			android:textOn="@string/tab_labels" android:layout_weight="1" />
-	</LinearLayout>
-	<ExpandableListView android:id="@+id/android:list" android:layout_width="fill_parent"
-		android:layout_height="wrap_content" />
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/LinearLayout01"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ToggleButton
+            android:id="@+id/appButton"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:checked="false"
+            android:background="?android:attr/selectableItemBackground"
+            android:textOff="@string/tab_apps"
+            android:textOn="@string/tab_apps"/>
+
+        <ToggleButton
+            android:id="@+id/labelButton"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:checked="true"
+            android:textOff="@string/tab_labels"
+            android:textOn="@string/tab_labels"/>
+
+    </LinearLayout>
+
+    <ExpandableListView
+        android:id="@+id/android:list"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>
 

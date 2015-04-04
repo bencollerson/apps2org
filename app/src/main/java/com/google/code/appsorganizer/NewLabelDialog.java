@@ -13,13 +13,13 @@ import com.google.code.appsorganizer.dialogs.TextEntryDialog;
 
 public class NewLabelDialog extends TextEntryDialog {
 
-	private final SimpleDialog labelAlreadExistsDialog;
+	private final SimpleDialog labelAlreadyExistsDialog;
 
 	public NewLabelDialog(GenericDialogManager dialogManager, final OnOkClickListener onLabelAdded) {
 		super(dialogManager, dialogManager.getString(R.string.label_name), null);
 
-		labelAlreadExistsDialog = new SimpleDialog(dialogManager, dialogManager.getString(R.string.label_already_exists));
-		labelAlreadExistsDialog.setShowNegativeButton(false);
+		labelAlreadyExistsDialog = new SimpleDialog(dialogManager, dialogManager.getString(R.string.label_already_exists));
+		labelAlreadyExistsDialog.setShowNegativeButton(false);
 
 		setOnOkListener(new OnOkClickListener() {
 
@@ -28,7 +28,7 @@ public class NewLabelDialog extends TextEntryDialog {
 			public void onClick(CharSequence t, DialogInterface dialog, int which) {
 				if (t != null && t.length() > 0) {
 					if (DatabaseHelper.initOrSingleton(getOwner()).labelDao.labelAlreadyExists(t.toString())) {
-						labelAlreadExistsDialog.showDialog();
+						labelAlreadyExistsDialog.showDialog();
 					} else {
 						onLabelAdded.onClick(t, dialog, which);
 					}

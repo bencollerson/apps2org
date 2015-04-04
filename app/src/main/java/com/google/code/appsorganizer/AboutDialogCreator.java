@@ -46,8 +46,10 @@ public class AboutDialogCreator extends GenericDialogCreator {
 		LayoutInflater factory = LayoutInflater.from(owner);
 		View body = factory.inflate(R.layout.about, null);
 		TextView authorText = (TextView) body.findViewById(R.id.author);
+        //FIXME author
 		authorText.setText(authorText.getText() + " Fabio Collini");
-		AlertDialog.Builder builder = new AlertDialog.Builder(owner);
+        //AlertDialog.Builder builder = new AlertDialog.Builder(owner, AlertDialog.THEME_DEVICE_DEFAULT_DARK);
+        AlertDialog.Builder builder = new AlertDialog.Builder(owner);
 		builder = builder.setIcon(R.drawable.icon);
 		String versionName = getVersionName(owner);
 		if (versionName != null) {

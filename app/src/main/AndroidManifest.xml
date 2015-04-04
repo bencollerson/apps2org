@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--FIXME versionName-->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	package="com.google.code.appsorganizer" android:versionCode="200"
-	android:versionName="1.6.0">
+	android:versionName="1.6.0 (willemw12's fork)">
 	<application android:icon="@drawable/icon" android:label="@string/app_name"
 		android:name="AppsOrganizerApplication">
 		<activity android:name=".SplashScreenActivity" android:label="@string/app_name">
@@ -13,6 +14,7 @@
 
 		<activity android:name=".LabelListActivity"></activity>
 		<activity android:name=".FileImporter"></activity>
+        <activity android:name=".FileExporter"></activity>
 		<activity android:name=".chooseicon.ChooseIconActivity"></activity>
 		<activity android:name=".chooseicon.ChooseIconFromPackActivity"></activity>
 		<activity android:name=".chooseicon.IconPackActivity"></activity>

@@ -23,7 +23,7 @@ public class MountReceiver extends BroadcastReceiver {
 		} catch (InterruptedException e) {
 		}
 		DatabaseHelper dbHelper = DatabaseHelper.initOrSingleton(context);
-		ApplicationInfoManager.reloadAll(context.getPackageManager(), dbHelper, null, false, null);
+		ApplicationInfoManager.reloadAll(context, dbHelper, null, false, null);
 		// rimetto first time in modo da far ricaricare la lista delle
 		// applicazioni
 		SplashScreenActivity.firstTime = true;

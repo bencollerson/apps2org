@@ -26,9 +26,9 @@ import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.google.code.appsorganizer.db.DatabaseHelper;
 import com.google.code.appsorganizer.dialogs.GenericDialogManagerActivity;
 import com.google.code.appsorganizer.model.AppCache;
-import com.google.code.appsorganizer.db.DatabaseHelper;
 
 /**
  * @author fabio

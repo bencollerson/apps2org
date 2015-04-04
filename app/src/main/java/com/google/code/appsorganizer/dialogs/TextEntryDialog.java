@@ -68,7 +68,8 @@ public class TextEntryDialog extends GenericDialogCreator {
 	public Dialog createDialog() {
 		LayoutInflater factory = LayoutInflater.from(owner);
 		final View textEntryView = factory.inflate(R.layout.dialog_text_entry, null);
-		final AlertDialog dialog = new AlertDialog.Builder(owner).setView(textEntryView).setTitle(title).setPositiveButton(
+        //final AlertDialog dialog = new AlertDialog.Builder(owner, AlertDialog.THEME_DEVICE_DEFAULT_DARK).setView(textEntryView).setTitle(title).setPositiveButton(
+        final AlertDialog dialog = new AlertDialog.Builder(owner).setView(textEntryView).setTitle(title).setPositiveButton(
 				R.string.alert_dialog_ok, new OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
 						TextView editView = (TextView) ((AlertDialog) dialog).findViewById(R.id.text_entry_edit);

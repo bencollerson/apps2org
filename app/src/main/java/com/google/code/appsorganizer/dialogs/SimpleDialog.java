@@ -18,15 +18,15 @@
  */
 package com.google.code.appsorganizer.dialogs;
 
-import java.io.Serializable;
-
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.AlertDialog.Builder;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
 import com.google.code.appsorganizer.R;
+
+import java.io.Serializable;
 
 public class SimpleDialog extends GenericDialogCreator implements Serializable {
 
@@ -93,8 +93,9 @@ public class SimpleDialog extends GenericDialogCreator implements Serializable {
 
 	@Override
 	public Dialog createDialog() {
-		Builder d = new AlertDialog.Builder(owner).setTitle(title);
-		DialogInterface.OnClickListener onClickListener = new DialogInterface.OnClickListener() {
+        //Builder d = new AlertDialog.Builder(owner, AlertDialog.THEME_DEVICE_DEFAULT_DARK).setTitle(title);
+        Builder d = new AlertDialog.Builder(owner).setTitle(title);
+        DialogInterface.OnClickListener onClickListener = new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				if (onOkListener != null) {
 					onOkListener.onClick(null, dialog, which);

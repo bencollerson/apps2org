@@ -1,3 +1,24 @@
+
+Apps2Org fork by willemw12
+==========================
+
+Apps2Org in a newer user interface (UI).
+
+Requirements: Android 5.0 (SDK 21) or higher.
+
+Known issues:
+
+* The Apps and Labels lists are not immediately updated (caused by removal of some depreceated code).
+* Files exported to Google Drive are empty files.
+
+This program is licensed under GPLv3 (see included COPYING file).
+
+Material Design icons by Google http://google.github.io/material-design-icons/.
+
+
+Apps2Org
+========
+
 Apps2Org is an Android application categorizer/launcher. It is a fork
 of (apparently no longer being maintained) Apps Organizer
 https://code.google.com/p/appsorganizer .

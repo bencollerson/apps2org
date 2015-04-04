@@ -18,8 +18,6 @@
  */
 package com.google.code.appsorganizer;
 
-import java.util.List;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -33,8 +31,10 @@ import com.google.code.appsorganizer.db.DatabaseHelper;
 import com.google.code.appsorganizer.dialogs.GenericDialogCreator;
 import com.google.code.appsorganizer.dialogs.GenericDialogManager;
 import com.google.code.appsorganizer.dialogs.OnOkClickListener;
-import com.google.code.appsorganizer.model.AppLabelSaver;
 import com.google.code.appsorganizer.model.AppCache;
+import com.google.code.appsorganizer.model.AppLabelSaver;
+
+import java.util.List;
 
 public class ChooseLabelDialogCreator extends GenericDialogCreator {
 
@@ -132,7 +132,7 @@ public class ChooseLabelDialogCreator extends GenericDialogCreator {
 		listView.setItemsCanFocus(false);
 		listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
-		AlertDialog.Builder builder = new AlertDialog.Builder(owner);
+        AlertDialog.Builder builder = new AlertDialog.Builder(owner, AlertDialog.THEME_DEVICE_DEFAULT_DARK);
 		builder = builder.setTitle(R.string.choose_labels_header);
 		builder = builder.setView(body);
 		return builder.create();

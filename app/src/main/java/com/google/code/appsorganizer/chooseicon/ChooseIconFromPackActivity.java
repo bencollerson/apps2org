@@ -18,15 +18,6 @@
  */
 package com.google.code.appsorganizer.chooseicon;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipException;
-import java.util.zip.ZipFile;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -46,8 +37,18 @@ import android.widget.ImageView;
 import com.google.code.appsorganizer.R;
 import com.google.code.appsorganizer.dialogs.ActivityWithDialog;
 
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipException;
+import java.util.zip.ZipFile;
+
 public class ChooseIconFromPackActivity extends ActivityWithDialog {
 
+    //TODO fix crash or hang on large icon packs
 	private static final int BUFFER_SIZE = 4096;
 
 	private GridView mGrid;
@@ -67,7 +68,7 @@ public class ChooseIconFromPackActivity extends ActivityWithDialog {
 
 			public void onItemClick(AdapterView<?> arg0, View arg1, int pos, long arg3) {
 				Intent res = new Intent();
-				res.putExtra("image", SelectAppDialog.convertToByteArray(((BitmapDrawable) mIcons[pos]).getBitmap()));
+				res.putExtra("image", SelectAppDialog.convertToByteArray(ChooseIconFromPackActivity.this, ((BitmapDrawable) mIcons[pos]).getBitmap()));
 				setResult(RESULT_OK, res);
 				finish();
 			}
@@ -90,7 +91,7 @@ public class ChooseIconFromPackActivity extends ActivityWithDialog {
 					for (ZipEntry entry : images) {
 						Bitmap bitmap = loadBitmap(z, entry);
 						if (bitmap != null) {
-							l.add(new BitmapDrawable(bitmap));
+							l.add(new BitmapDrawable(getResources(), bitmap));
 						}
 						handler.sendEmptyMessage(-1);
 					}
@@ -211,7 +212,8 @@ public class ChooseIconFromPackActivity extends ActivityWithDialog {
 			if (convertView == null) {
 				i = new ImageView(ChooseIconFromPackActivity.this);
 				i.setScaleType(ImageView.ScaleType.FIT_CENTER);
-				i.setLayoutParams(new GridView.LayoutParams(50, 50));
+                //TODO getResources().getDimension(R.dimen.notification_large_icon_width);    //64dp
+                i.setLayoutParams(new GridView.LayoutParams(96, 96));
 			} else {
 				i = (ImageView) convertView;
 			}

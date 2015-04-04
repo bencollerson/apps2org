@@ -18,10 +18,10 @@
  */
 package com.google.code.appsorganizer.model;
 
-import gnu.trove.TIntIntHashMap;
-
 import com.google.code.appsorganizer.R;
 import com.google.code.appsorganizer.db.ObjectWithId;
+
+import gnu.trove.TIntIntHashMap;
 
 /**
  * @author fabio
@@ -71,7 +71,7 @@ public class Label extends ObjectWithId implements Comparable<Label> {
 			iconsMap.put(i++, R.drawable.globe);
 			iconsMap.put(i++, R.drawable.hardware);
 			iconsMap.put(i++, R.drawable.icon);
-			iconsMap.put(i++, R.drawable.icon_default);
+            iconsMap.put(i++, R.drawable.icon_default);
 			iconsMap.put(i++, R.drawable.image2);
 			iconsMap.put(i++, R.drawable.images);
 			iconsMap.put(i++, R.drawable.internet_connection_tools);

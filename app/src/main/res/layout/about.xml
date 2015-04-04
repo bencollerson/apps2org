@@ -1,40 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:orientation="vertical" android:layout_width="fill_parent"
-	android:layout_height="fill_parent">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
 
-	<TextView android:text="@string/Author" android:gravity="center_horizontal" android:id="@+id/author"
-		android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:paddingBottom="8dip" android:textSize="18dip"></TextView>
+    <!--FIXME-->
+    <TextView
+        android:id="@+id/author2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:text="@string/app_name_fork"
+        android:textSize="18dp"/>
 
-	<TextView android:text="github.com/pfalcon/apps2org"
-		android:gravity="center_horizontal" android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:paddingBottom="16dip"
-		android:textSize="16dip" android:autoLink="web"></TextView>
+    <!--FIXME-->
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:autoLink="web"
+        android:gravity="center_horizontal"
+        android:paddingBottom="8dp"
+        android:text="github.com/willemw12/apps2org"
+        android:textSize="16sp"/>
 
-	<TextView android:text="@string/Any_suggestion_or_bug_to" android:gravity="center_horizontal"
-		android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:textSize="16dip"></TextView>
-	<TextView android:text="github.com/pfalcon/apps2org"
-		android:gravity="center_horizontal" android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:paddingBottom="16dip"
-		android:textSize="16dip" android:autoLink="web"></TextView>
+    <!--FIXME-->
+    <!--
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="24dp"/>
+    -->
 
-	<TextView android:text="@string/Follow_me_on" android:gravity="center_horizontal"
-		android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:textSize="16dip"></TextView>
-	<TextView android:text="github.com/pfalcon/apps2org"
-		android:gravity="center_horizontal" android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:paddingBottom="16dip"
-		android:textSize="16dip" android:autoLink="web"></TextView>
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
 
-	<TextView android:text="@string/How_to" android:gravity="center_horizontal"
-		android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:textSize="16dip"></TextView>
-	<TextView android:text="sites.google.com/site/appsorganizer/how-to"
-		android:gravity="center_horizontal" android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:paddingBottom="16dip"
-		android:textSize="16dip" android:autoLink="web"></TextView>
+    <!--FIXME-->
+    <TextView
+        android:id="@+id/author2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:text="@string/app_name"
+        android:textSize="18sp"/>
+
+    <TextView
+        android:id="@+id/author"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:paddingBottom="8dp"
+        android:text="@string/Author"
+        android:textSize="16dp"/>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:autoLink="web"
+        android:gravity="center_horizontal"
+        android:paddingBottom="8dp"
+        android:text="github.com/pfalcon/apps2org"
+        android:textSize="16dp"/>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="@string/Any_suggestion_or_bug_to"
+        android:textSize="16sp"/>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:autoLink="web"
+        android:gravity="center_horizontal"
+        android:paddingBottom="8dp"
+        android:text="github.com/pfalcon/apps2org"
+        android:textSize="16sp"/>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="@string/Follow_me_on"
+        android:textSize="16dp"/>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:autoLink="web"
+        android:gravity="center_horizontal"
+        android:paddingBottom="8dp"
+        android:text="github.com/pfalcon/apps2org"
+        android:textSize="16sp"/>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="@string/How_to"
+        android:textSize="16dp"/>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:autoLink="web"
+        android:gravity="center_horizontal"
+        android:text="sites.google.com/site/appsorganizer/how-to"
+        android:textSize="16sp"/>
 
 </LinearLayout>
 

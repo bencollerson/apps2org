@@ -18,8 +18,6 @@
  */
 package com.google.code.appsorganizer;
 
-import java.util.HashSet;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -31,6 +29,8 @@ import com.google.code.appsorganizer.db.DatabaseHelper;
 import com.google.code.appsorganizer.dialogs.GenericDialogCreator;
 import com.google.code.appsorganizer.dialogs.GenericDialogManager;
 import com.google.code.appsorganizer.dialogs.OnOkClickListener;
+
+import java.util.HashSet;
 
 public class ChooseAppsDialogCreator extends GenericDialogCreator {
 
@@ -56,7 +56,7 @@ public class ChooseAppsDialogCreator extends GenericDialogCreator {
 		Cursor c = dbHelper.appCacheDao.getAppsOfLabel(currentLabelId);
 
 		adapter = new SimpleCursorAdapter(owner, android.R.layout.simple_list_item_multiple_choice, c, new String[] { "label" },
-				new int[] { android.R.id.text1 });
+				new int[] { android.R.id.text1 }, 0);
 		listView.setAdapter(adapter);
 
 		int size = checkedApps.size();
@@ -71,7 +71,8 @@ public class ChooseAppsDialogCreator extends GenericDialogCreator {
 		listView.setItemsCanFocus(false);
 		listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
-		AlertDialog.Builder builder = new AlertDialog.Builder(owner);
+        //AlertDialog.Builder builder = new AlertDialog.Builder(owner, AlertDialog.THEME_DEVICE_DEFAULT_DARK);
+        AlertDialog.Builder builder = new AlertDialog.Builder(owner);
 		builder = builder.setTitle(R.string.select_apps);
 		builder = builder.setView(listView);
 		builder = builder.setPositiveButton(R.string.alert_dialog_ok, new DialogInterface.OnClickListener() {

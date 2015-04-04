@@ -28,7 +28,7 @@ public final class AppCursorAdapter extends SimpleCursorAdapter implements Secti
 	private final AlphabetIndexer alphaIndexer;
 
 	public AppCursorAdapter(Context context, int layout, Cursor c, String[] from, int[] to) {
-		super(context, layout, c, from, to);
+		super(context, layout, c, from, to, 0);
 		alphaIndexer = new AlphabetIndexer(c, 1, " ABCDEFGHIJKLMNOPQRSTUVWXYZ");
 	}
 

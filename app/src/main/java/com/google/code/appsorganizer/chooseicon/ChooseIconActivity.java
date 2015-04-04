@@ -72,7 +72,8 @@ public class ChooseIconActivity extends ActivityWithDialog {
 			if (convertView == null) {
 				i = new ImageView(ChooseIconActivity.this);
 				i.setScaleType(ImageView.ScaleType.FIT_CENTER);
-				i.setLayoutParams(new GridView.LayoutParams(50, 50));
+                //TODO getResources().getDimension(R.dimen.notification_large_icon_width);    //64dp
+                i.setLayoutParams(new GridView.LayoutParams(96, 96));
 			} else {
 				i = (ImageView) convertView;
 			}

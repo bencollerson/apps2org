@@ -1,26 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="fill_parent" android:layout_height="wrap_content">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
 
-	<LinearLayout android:layout_height="48dip" android:id="@+id/buttonPanel"
-		android:layout_width="fill_parent" android:gravity="center" android:layout_alignParentBottom="true">
+    <LinearLayout
+        android:id="@+id/buttonPanel"
+        android:layout_width="fill_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:gravity="center">
 
-		<CheckBox style="?android:attr/starStyle" android:id="@+id/starCheck" android:focusable="false"
-			android:layout_width="wrap_content" android:layout_marginRight="5dip"
-			android:layout_height="wrap_content" android:layout_gravity="center_vertical"  />
+        <CheckBox
+            android:id="@+id/starCheck"
+            android:button="@android:drawable/btn_star"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="4dp"
+            android:focusable="false"/>
 
-		<Button android:text="@string/alert_dialog_ok" android:id="@+id/okButton"
-			android:layout_height="wrap_content" android:layout_width="110dip"/>
+        <Button
+            android:id="@+id/cancelButton"
+            android:layout_width="96dp"
+            android:layout_height="wrap_content"
+            android:text="@string/alert_dialog_cancel"/>
 
-		<Button android:text="@string/alert_dialog_cancel" android:id="@+id/cancelButton"
-			android:layout_height="wrap_content" android:layout_width="110dip"/>
+        <Button
+            android:id="@+id/okButton"
+            android:layout_width="96dp"
+            android:layout_height="wrap_content"
+            android:text="@string/alert_dialog_ok"/>
 
-		<ImageButton android:text="@string/alert_dialog_new"
-			android:id="@+id/newLabelButton" android:layout_height="wrap_content"
-			android:layout_width="wrap_content" android:src="@android:drawable/ic_input_add" />
-	</LinearLayout>
+        <ImageButton
+            android:id="@+id/newLabelButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_add_circle_white_36dp"
+            android:text="@string/alert_dialog_new"/>
+    </LinearLayout>
 
-	<ListView android:id="@+id/labelList" android:layout_width="fill_parent" android:layout_above="@id/buttonPanel"
-		android:choiceMode="multipleChoice" android:layout_height="wrap_content" android:layout_alignParentTop="true" />
+    <ListView
+        android:id="@+id/labelList"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/buttonPanel"
+        android:layout_alignParentTop="true"
+        android:choiceMode="multipleChoice"/>
 
 </RelativeLayout>

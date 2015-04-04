@@ -18,12 +18,11 @@
  */
 package com.google.code.appsorganizer.shortcut;
 
-import java.util.List;
-
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -34,6 +33,8 @@ import com.google.code.appsorganizer.R;
 import com.google.code.appsorganizer.db.DatabaseHelper;
 import com.google.code.appsorganizer.model.Label;
 import com.google.code.appsorganizer.utils.ArrayAdapterSmallRow;
+
+import java.util.List;
 
 /**
  * @author fabio
@@ -77,7 +78,20 @@ public class ShortcutCreator extends ListActivity {
 		intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, name);
 
 		if (imageBytes != null) {
-			intent.putExtra(Intent.EXTRA_SHORTCUT_ICON, BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length));
+            ////intent.putExtra(Intent.EXTRA_SHORTCUT_ICON, BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length));
+
+            //DisplayMetrics dm = new DisplayMetrics();
+            //a.getWindowManager().getDefaultDisplay().getMetrics(dm);
+            //final float density = dm.density;
+            //final int iconSize = (int)(64 * density);
+            //
+            //ActivityManager am = (ActivityManager) a.getSystemService(Context.ACTIVITY_SERVICE);
+            //final int iconSize = am.getLauncherLargeIconSize();
+
+            Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+            //if (bitmap.getWidth() != iconSize || bitmap.getHeight() != iconSize) { }
+            //bitmap = Bitmap.createScaledBitmap(bitmap, iconSize, iconSize, false);
+			intent.putExtra(Intent.EXTRA_SHORTCUT_ICON, bitmap);
 		} else {
 			Parcelable iconResource = Intent.ShortcutIconResource.fromContext(a, icon);
 			intent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, iconResource);

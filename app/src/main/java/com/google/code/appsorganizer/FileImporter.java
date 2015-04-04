@@ -18,140 +18,79 @@
  */
 package com.google.code.appsorganizer;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-
+import android.app.Activity;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
+import android.view.MenuItem;
 
 import com.google.code.appsorganizer.db.DbImportExport;
-import com.google.code.appsorganizer.dialogs.ListActivityWithDialog;
+import com.google.code.appsorganizer.dialogs.ActivityWithDialog;
+import com.google.code.appsorganizer.dialogs.OnOkClickListener;
 import com.google.code.appsorganizer.dialogs.SimpleDialog;
 
 /**
  * @author fabio
- * 
  */
-public class FileImporter extends ListActivityWithDialog {
+public class FileImporter extends ActivityWithDialog {
 
-	public static final String FILE_EXTENSION = "txt";
+    private static final int IMPORT_REQUEST_CODE = 1;
 
-	public static final String EXPORT_DIR = "/sdcard/AppsOrganizer/";
+    private SimpleDialog importErrorDialog;
 
-	protected ArrayList<String> mFileList;
-	protected File mRoot;
+    /**
+     * Called when the activity is first created.
+     */
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setTitle(getString(R.string.import_menu));
+        getActionBar().setDisplayHomeAsUpEnabled(true);
 
-	private SimpleDialog importErrorDialog;
+        OnOkClickListener onOkClickListener = new OnOkClickListener() {
+            private static final long serialVersionUID = 1L;
+            public void onClick(CharSequence t, DialogInterface dialog, int which) {
+                finish();
+            }
+        };
+        importErrorDialog = new SimpleDialog(getGenericDialogManager(), getString(R.string.import_error), onOkClickListener);
+        importErrorDialog.setShowNegativeButton(false);
 
-	/** Called when the activity is first created. */
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
+        //Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        //intent.setType("text/plain");
+        //intent.setType("text/*");
+        intent.setType("*/*");
+        startActivityForResult(intent, IMPORT_REQUEST_CODE);
+    }
 
-		super.onCreate(savedInstanceState);
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
+        if (requestCode == IMPORT_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            if (resultData != null) {
+                try {
+                    Uri uri = resultData.getData();
+                    DbImportExport.importData(this, uri);
+                    finish();
+                } catch (Throwable e) {
+                    e.printStackTrace();
+                    importErrorDialog.setTitle(getString(R.string.import_error) + ": " + e.getMessage());
+                    getGenericDialogManager().showDialog(importErrorDialog);
+                }
+            }
+        }
+    }
 
-		setContentView(R.layout.filelister);
-
-		importErrorDialog = new SimpleDialog(getGenericDialogManager(), getString(R.string.import_error));
-		importErrorDialog.setShowNegativeButton(false);
-
-		initialize(getString(R.string.import_menu), EXPORT_DIR);
-		getListView().setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(AdapterView<?> arg0, View arg1, int pos, long arg3) {
-				String fileName = (String) getListAdapter().getItem(pos);
-				try {
-					DbImportExport.importData(FileImporter.this, EXPORT_DIR + fileName);
-					new AppsReloader(FileImporter.this, false).reload();
-					finish();
-				} catch (Throwable e) {
-					e.printStackTrace();
-					importErrorDialog.setTitle(getString(R.string.import_error) + ": " + e.getMessage());
-					getGenericDialogManager().showDialog(importErrorDialog);
-				}
-			}
-		});
-	}
-
-	public void initialize(String title, String path) {
-		setTitle(title);
-		mFileList = new ArrayList<String>();
-		if (getDirectory(path)) {
-			getFiles(mRoot);
-			displayFiles();
-		}
-
-	}
-
-	public void refreshRoot() {
-		getFiles(mRoot);
-		displayFiles();
-	}
-
-	private boolean getDirectory(String path) {
-
-		TextView tv = (TextView) findViewById(R.id.filelister_message);
-
-		// check to see if there's an sd card.
-		String cardstatus = Environment.getExternalStorageState();
-		if (cardstatus.equals(Environment.MEDIA_REMOVED) || cardstatus.equals(Environment.MEDIA_UNMOUNTABLE)
-				|| cardstatus.equals(Environment.MEDIA_UNMOUNTED) || cardstatus.equals(Environment.MEDIA_MOUNTED_READ_ONLY)) {
-			tv.setText(getString(R.string.sdcard_error));
-			return false;
-		}
-
-		// if storage directory does not exist, create it.
-		mRoot = checkDirExists(path);
-
-		if (mRoot == null) {
-			tv.setText(getString(R.string.directory_error, path));
-			return false;
-		} else {
-			return true;
-		}
-	}
-
-	public static File checkDirExists(String path) {
-		File f = new File(path);
-		if (!f.exists()) {
-			if (!f.mkdirs()) {
-				return null;
-			}
-		}
-		return f;
-	}
-
-	private void getFiles(File f) {
-		if (f.isDirectory()) {
-			File[] childs = f.listFiles();
-			for (File child : childs) {
-				getFiles(child);
-			}
-		} else {
-			String filename = f.getName();
-			if (filename.matches(".*\\." + FILE_EXTENSION)) {
-				mFileList.add(filename);
-			}
-		}
-	}
-
-	/**
-	 * Opens the directory, puts valid files in array adapter for display
-	 */
-	private void displayFiles() {
-
-		ArrayAdapter<String> fileAdapter;
-		Collections.sort(mFileList, String.CASE_INSENSITIVE_ORDER);
-
-		getListView().setItemsCanFocus(false);
-		getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-		fileAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_single_choice, mFileList);
-
-		setListAdapter(fileAdapter);
-	}
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                finish();
+                return false;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

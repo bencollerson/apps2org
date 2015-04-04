@@ -29,17 +29,17 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnClickListener;
 import android.widget.ExpandableListView;
+import android.widget.ExpandableListView.ExpandableListContextMenuInfo;
 import android.widget.ImageView;
 import android.widget.SimpleCursorTreeAdapter;
 import android.widget.TextView;
 import android.widget.ToggleButton;
-import android.widget.ExpandableListView.ExpandableListContextMenuInfo;
 
 import com.google.code.appsorganizer.appwidget.AppsOrganizerAppWidgetProvider;
 import com.google.code.appsorganizer.chooseicon.SelectAppDialog;
@@ -82,7 +82,7 @@ public class LabelListActivity extends ExpandableListActivityWithDialog implemen
 
 	private ConfirmDeleteDialog confirmDeleteDialog;
 
-	private SimpleDialog labelAlreadExistsDialog;
+	private SimpleDialog labelAlreadyExistsDialog;
 
 	private SelectAppDialog selectAppDialog;
 
@@ -98,21 +98,21 @@ public class LabelListActivity extends ExpandableListActivityWithDialog implemen
 			private static final long serialVersionUID = 1L;
 
 			public void onClick(CharSequence charSequence, DialogInterface dialog, int which) {
-				requeryCursor();
+//				requeryCursor();
 			}
 		};
 		GenericDialogManager dialogManager = getGenericDialogManager();
 		chooseLabelDialog = new ChooseLabelDialogCreator(dialogManager, onOkClickListener);
 
-		chooseAppsDialogCreator = new ChooseAppsDialogCreator(dialogManager, onOkClickListener);
+        chooseAppsDialogCreator = new ChooseAppsDialogCreator(dialogManager, onOkClickListener);
 		textEntryDialog = new RenameLabelDialog(dialogManager);
 
 		confirmDeleteDialog = new ConfirmDeleteDialog(dialogManager);
 
 		selectAppDialog = new SelectAppDialog(dialogManager, dbHelper);
 
-		labelAlreadExistsDialog = new SimpleDialog(dialogManager, getString(R.string.label_already_exists));
-		labelAlreadExistsDialog.setShowNegativeButton(false);
+		labelAlreadyExistsDialog = new SimpleDialog(dialogManager, getString(R.string.label_already_exists));
+		labelAlreadyExistsDialog.setShowNegativeButton(false);
 		optionMenuManager = new OptionMenuManager(this, dbHelper, onOkClickListener);
 
 		labelButton = (ToggleButton) findViewById(R.id.labelButton);
@@ -143,7 +143,7 @@ public class LabelListActivity extends ExpandableListActivityWithDialog implemen
 		MatrixCursor otherAppsCursor = new MatrixCursor(LabelDao.COLS_STRING, 1);
 		otherAppsCursor.addRow(new Object[] { AppCacheDao.OTHER_LABEL_ID, getText(R.string.other_label).toString(), 0, null });
 		MergeCursor m = new MergeCursor(new Cursor[] { c, otherAppsCursor });
-		startManagingCursor(m);
+//		startManagingCursor(m);
 
 		SimpleCursorTreeAdapter mAdapter = new SimpleCursorTreeAdapter(this, m, R.layout.label_row_with_icon, new String[] { LabelDao.LABEL_COL_NAME,
 				LabelDao.ICON_COL_NAME }, new int[] {}, R.layout.app_row, ApplicationViewBinder.COLS, ApplicationViewBinder.VIEWS) {
@@ -200,11 +200,11 @@ public class LabelListActivity extends ExpandableListActivityWithDialog implemen
 				public void onClick(CharSequence charSequence, DialogInterface dialog, int which) {
 					String labelName = charSequence.toString();
 					if (dbHelper.labelDao.labelAlreadyExists(labelName)) {
-						labelAlreadExistsDialog.showDialog();
+						labelAlreadyExistsDialog.showDialog();
 					} else {
 						dbHelper.labelDao.updateName(labelId, labelName);
 						AppsOrganizerAppWidgetProvider.updateAppWidget(LabelListActivity.this, dbHelper.labelDao.queryById(labelId));
-						requeryCursor();
+//						requeryCursor();
 					}
 				}
 			});
@@ -238,8 +238,8 @@ public class LabelListActivity extends ExpandableListActivityWithDialog implemen
 					DatabaseHelper dbHelper = DatabaseHelper.singleton();
 					dbHelper.appsLabelDao.deleteAppsOfLabel(labelId);
 					dbHelper.labelDao.delete(labelId);
-					requeryCursor();
-				}
+//					requeryCursor();
+                }
 			};
 		}
 
@@ -288,7 +288,7 @@ public class LabelListActivity extends ExpandableListActivityWithDialog implemen
 			if (!c.isNull(3)) {
 				byte[] imageBytes = c.getBlob(3);
 				Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-				menu.setHeaderIcon(new BitmapDrawable(bitmap));
+				menu.setHeaderIcon(new BitmapDrawable(getResources(), bitmap));
 			} else {
 				int icon = c.getInt(2);
 				if (icon != 0) {
@@ -347,9 +347,9 @@ public class LabelListActivity extends ExpandableListActivityWithDialog implemen
 				break;
 			case MENU_ITEM_ADD_TO_HOME:
 				int icon = c.getInt(2);
-				Intent result = ShortcutCreator.createIntent(this, labelId, labelName, c.isNull(3) ? null : c.getBlob(3), icon > 0 ? Label
-						.convertToIcon(icon) : R.drawable.icon_default);
-
+                Intent result = ShortcutCreator.createIntent(this, labelId, labelName,
+                            c.isNull(3) ? null : c.getBlob(3),
+                            icon > 0 ? Label.convertToIcon(icon) : R.drawable.icon_default);
 				result.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
 				sendBroadcast(result);
 				break;
@@ -368,10 +368,10 @@ public class LabelListActivity extends ExpandableListActivityWithDialog implemen
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (ApplicationContextMenuManager.onActivityResult(this, requestCode, resultCode, data)) {
-			requeryCursor();
+//			requeryCursor();
 		}
 		if (selectAppDialog.onActivityResult(requestCode, resultCode, data)) {
-			requeryCursor();
+//			requeryCursor();
 		}
 	}
 
@@ -390,7 +390,7 @@ public class LabelListActivity extends ExpandableListActivityWithDialog implemen
 		if (expandableListAdapter != null) {
 			Cursor cursor = expandableListAdapter.getCursor();
 			if (cursor != null) {
-				cursor.requery();
+//				cursor.requery();
 			}
 		}
 	}

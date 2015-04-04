@@ -18,10 +18,6 @@
  */
 package com.google.code.appsorganizer;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.lang.Thread.UncaughtExceptionHandler;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -31,6 +27,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.lang.Thread.UncaughtExceptionHandler;
 
 /**
  * @author fabio
@@ -51,7 +51,8 @@ public class BugReportActivity extends Activity {
 				String exceptionString = getExceptionString();
 				final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
 				emailIntent.setType("plain/text");
-				emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[] { "appsorganizer@gmail.com" });
+                //FIXME emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[] { "appsorganizer@gmail.com" });
+                emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[] { "willemw12@gmail.com" });
 				emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Bug report");
 				emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, exceptionString);
 				startActivity(Intent.createChooser(emailIntent, getText(R.string.Bug_report)));

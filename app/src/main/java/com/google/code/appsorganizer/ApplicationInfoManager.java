@@ -18,14 +18,13 @@
  */
 package com.google.code.appsorganizer;
 
-import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
-import java.util.List;
-
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ComponentInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.Bitmap.Config;
@@ -39,15 +38,20 @@ import com.google.code.appsorganizer.db.AppCacheDao;
 import com.google.code.appsorganizer.db.DatabaseHelper;
 import com.google.code.appsorganizer.model.AppCache;
 
+import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.List;
+
 public class ApplicationInfoManager {
 
 	private ApplicationInfoManager() {
 	}
 
-	public static void reloadAll(PackageManager pm, DatabaseHelper dbHelper, Handler handler, boolean discardCache, String packageToReload) {
+    public static void reloadAll(Context context, DatabaseHelper dbHelper, Handler handler, boolean discardCache, String packageToReload) {
+        PackageManager pm = context.getPackageManager();
 		AppCacheDao appCacheDao = dbHelper.appCacheDao;
 		synchronized (ApplicationInfoManager.class) {
-			appCacheDao.fixDuplicateApps();
+            appCacheDao.fixDuplicateApps();
 			StringBuffer installedIds = new StringBuffer("-1");
 			List<ResolveInfo> installedApplications = getAllResolveInfo(pm);
 
@@ -58,7 +62,7 @@ public class ApplicationInfoManager {
 			for (ResolveInfo resolveInfo : installedApplications) {
 				ComponentInfo a = resolveInfo.activityInfo;
 				AppCache appCache = appCacheDao.queryForAppCache(a.packageName, a.name, false, !discardCache);
-				String label = loadAppLabel(pm, a, discardCache || a.packageName.equals(packageToReload), appCacheDao, appCache, installedIds);
+				String label = loadAppLabel(context, a, discardCache || a.packageName.equals(packageToReload), appCacheDao, appCache, installedIds);
 				if (handler != null) {
 					Message message = new Message();
 					message.obj = label;
@@ -77,8 +81,11 @@ public class ApplicationInfoManager {
 		handler.sendMessage(message);
 	}
 
-	private static String loadAppLabel(PackageManager pm, ComponentInfo a, boolean discardCache, AppCacheDao appCacheDao, AppCache loadedObj,
-			StringBuffer installedIds) {
+	private static String loadAppLabel(Context context, ComponentInfo a, boolean discardCache,
+                                       AppCacheDao appCacheDao, AppCache loadedObj,
+			                           StringBuffer installedIds) {
+        Resources res = context.getResources();
+        PackageManager pm = context.getPackageManager();
 		boolean changed = false;
 		String label = null;
 		byte[] image = null;
@@ -102,8 +109,10 @@ public class ApplicationInfoManager {
 				Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
 				int width = bitmap.getWidth();
 				int height = bitmap.getHeight();
-				if (width > 72 || height > 72) {
-					bitmap = scaleImage(bitmap, width, height);
+                ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+                final int ICON_SIZE = am.getLauncherLargeIconSize();
+                if (width > ICON_SIZE || height > ICON_SIZE) {
+                    bitmap = scaleImage(res, bitmap, ICON_SIZE, width, height);
 				}
 				ByteArrayOutputStream os = new ByteArrayOutputStream();
 				boolean compressed = bitmap.compress(CompressFormat.PNG, 100, os);
@@ -134,30 +143,30 @@ public class ApplicationInfoManager {
 		return label;
 	}
 
-	private static Bitmap scaleImage(Bitmap bitmap, int width, int height) {
-		int newWidth = 72;
-		int newHeight = 72;
+	private static Bitmap scaleImage(Resources res, Bitmap bitmap, int iconSize, int width, int height) {
+		int newWidth = iconSize;
+		int newHeight = iconSize;
 		if (width > height) {
-			newHeight = 72 * height / width;
+			newHeight = iconSize * height / width;
 		} else if (width < height) {
-			newWidth = 72 * width / height;
+			newWidth = iconSize * width / height;
 		}
 		Bitmap bitmap2 = Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, true);
 
-		return createSquareBitmap(bitmap2);
+		return createSquareBitmap(res, bitmap2, iconSize);
 	}
 
-	private static Bitmap createSquareBitmap(Bitmap bitmap) {
-		Bitmap res = Bitmap.createBitmap(72, 72, Config.ARGB_8888);
-		Canvas c = new Canvas(res);
-		BitmapDrawable d = new BitmapDrawable(bitmap);
+	private static Bitmap createSquareBitmap(Resources res, Bitmap bitmap, int iconSize) {
+		Bitmap bm = Bitmap.createBitmap(iconSize, iconSize, Config.ARGB_8888);
+		Canvas c = new Canvas(bm);
+		BitmapDrawable d = new BitmapDrawable(res, bitmap);
 		int width = bitmap.getWidth();
 		int height = bitmap.getHeight();
-		int left = (72 - width) / 2;
-		int top = (72 - height) / 2;
+		int left = (iconSize - width) / 2;
+		int top = (iconSize - height) / 2;
 		d.setBounds(left, top, left + width, top + height);
 		d.draw(c);
-		return res;
+		return bm;
 	}
 
 	private static List<ResolveInfo> getAllResolveInfo(PackageManager pm) {

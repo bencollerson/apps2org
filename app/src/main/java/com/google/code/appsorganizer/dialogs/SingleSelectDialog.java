@@ -18,15 +18,15 @@
  */
 package com.google.code.appsorganizer.dialogs;
 
-import java.io.Serializable;
-
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.AlertDialog.Builder;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 
 import com.google.code.appsorganizer.R;
+
+import java.io.Serializable;
 
 /**
  * @author fabio
@@ -59,7 +59,8 @@ public abstract class SingleSelectDialog extends GenericDialogCreator implements
 
 	@Override
 	public Dialog createDialog() {
-		Builder d = new AlertDialog.Builder(owner).setTitle(title);
+        //Builder d = new AlertDialog.Builder(owner, AlertDialog.THEME_DEVICE_DEFAULT_DARK).setTitle(title);
+        Builder d = new AlertDialog.Builder(owner).setTitle(title);
 		d.setSingleChoiceItems(items, selectedItem, new OnClickListener() {
 
 			public void onClick(DialogInterface dialog, int which) {

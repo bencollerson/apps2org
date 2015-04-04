@@ -80,7 +80,7 @@ public class SplashScreenActivity extends ListActivityWithDialog {
 			private static final long serialVersionUID = 1L;
 
 			public void onClick(CharSequence charSequence, DialogInterface dialog, int which) {
-				requeryCursor();
+//				requeryCursor();
 			}
 		});
 
@@ -89,7 +89,7 @@ public class SplashScreenActivity extends ListActivityWithDialog {
 			private static final long serialVersionUID = 1L;
 
 			public void onClick(CharSequence charSequence, DialogInterface dialog, int which) {
-				requeryCursor();
+//				requeryCursor();
 			}
 		});
 
@@ -257,7 +257,7 @@ public class SplashScreenActivity extends ListActivityWithDialog {
 					editor.commit();
 				}
 
-				ApplicationInfoManager.reloadAll(getPackageManager(), dbHelper, handler, !appsAlreadyReloaded, null);
+				ApplicationInfoManager.reloadAll(getApplicationContext(), dbHelper, handler, !appsAlreadyReloaded, null);
 				handler.sendEmptyMessage(-3);
 			}
 		};
@@ -283,7 +283,7 @@ public class SplashScreenActivity extends ListActivityWithDialog {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (ApplicationContextMenuManager.onActivityResult(this, requestCode, resultCode, data)) {
-			requeryCursor();
+//			requeryCursor();
 		}
 	}
 
@@ -297,19 +297,19 @@ public class SplashScreenActivity extends ListActivityWithDialog {
 		return optionMenuManager.onOptionsItemSelected(item);
 	}
 
-	private void requeryCursor() {
-		SimpleCursorAdapter listAdapter = getListAdapter();
-		if (listAdapter != null) {
-			Cursor cursor = listAdapter.getCursor();
-			if (cursor != null) {
-				cursor.requery();
-			}
-		}
-	}
+//	private void requeryCursor() {
+//		SimpleCursorAdapter listAdapter = getListAdapter();
+//		if (listAdapter != null) {
+//			Cursor cursor = listAdapter.getCursor();
+//			if (cursor != null) {
+//				cursor.requery();
+//			}
+//		}
+//	}
 
 	private void initAdapter() {
 		Cursor c = dbHelper.appCacheDao.getAllApps(ApplicationViewBinder.COLS);
-		startManagingCursor(c);
+//		startManagingCursor(c);
 		SimpleCursorAdapter adapter = new AppCursorAdapter(this, R.layout.app_row, c, ApplicationViewBinder.COLS, ApplicationViewBinder.VIEWS);
 		applicationViewBinder = new ApplicationViewBinder(dbHelper, this, chooseLabelDialog);
 		adapter.setViewBinder(applicationViewBinder);

@@ -1,23 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:orientation="vertical" android:layout_width="fill_parent"
-	android:layout_height="fill_parent">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
 
-	<TextView android:text="@string/Bug_report_1" android:gravity="center_horizontal"
-		android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:paddingBottom="8dip" android:paddingTop="30dip" android:textSize="18dip"></TextView>
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:paddingTop="16dp"
+        android:paddingBottom="8dp"
+        android:text="@string/Bug_report_1"
+        android:textSize="18sp"/>
 
-	<TextView android:text="@string/Bug_report_2" android:gravity="center_horizontal"
-		android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:paddingBottom="8dip" android:textSize="18dip"></TextView>
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:paddingBottom="8dp"
+        android:text="@string/Bug_report_2"
+        android:textSize="16sp"/>
 
-	<Button android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:text="@string/Bug_report_button" android:layout_margin="20dip"
-		android:id="@+id/sendEmailButton"></Button>
+    <Button
+        android:id="@+id/sendEmailButton"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="8dp"
+        android:text="@string/Bug_report_button"
+        android:textSize="16sp"/>
 
-	<TextView android:text="@string/Bug_report_3" android:gravity="center_horizontal"
-		android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:paddingBottom="8dip" android:textSize="18dip"></TextView>
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:paddingBottom="8dp"
+        android:text="@string/Bug_report_3"
+        android:textSize="16sp"/>
 
 </LinearLayout>
 
