@@ -25,8 +25,6 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.View;
-import android.view.View.OnClickListener;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -46,18 +44,19 @@ public class BugReportActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.bug_report);
-		findViewById(R.id.sendEmailButton).setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				String exceptionString = getExceptionString();
-				final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
-				emailIntent.setType("plain/text");
-                //FIXME emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[] { "appsorganizer@gmail.com" });
-                emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[] { "willemw12@gmail.com" });
-				emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Bug report");
-				emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, exceptionString);
-				startActivity(Intent.createChooser(emailIntent, getText(R.string.Bug_report)));
-			}
-		});
+		//FIXME Send email
+		//findViewById(R.id.sendEmailButton).setOnClickListener(new OnClickListener() {
+		//	public void onClick(View v) {
+		//		String exceptionString = getExceptionString();
+		//		final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+		//		emailIntent.setType("plain/text");
+        //        //FIXME emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[] { "appsorganizer@gmail.com" });
+        //        emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[] { "willemw12@gmail.com" });
+		//		emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Bug report");
+		//		emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, exceptionString);
+		//		startActivity(Intent.createChooser(emailIntent, getText(R.string.Bug_report)));
+		//	}
+		//});
 		saveExceptionToPreferences(this, null);
 	}
 
