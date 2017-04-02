@@ -53,6 +53,7 @@ import com.google.code.appsorganizer.dialogs.OnOkClickListener;
 import com.google.code.appsorganizer.dialogs.SimpleDialog;
 import com.google.code.appsorganizer.dialogs.TextEntryDialog;
 import com.google.code.appsorganizer.model.Label;
+import com.google.code.appsorganizer.shortcut.LabelShortcut;
 import com.google.code.appsorganizer.shortcut.ShortcutCreator;
 
 public class LabelListActivity extends ExpandableListActivityWithDialog implements GenericDialogManagerActivity {
@@ -326,7 +327,14 @@ public class LabelListActivity extends ExpandableListActivityWithDialog implemen
 		} else if (type == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
 			final Cursor c = getExpandableListAdapter().getGroup(groupPos);
 			String labelName = c.getString(1);
-			final long labelId = c.getLong(0);
+
+			//FIXME "Other apps" shortcut
+			//final long labelId = c.getLong(0);
+			long labelId = c.getLong(0);
+			if (labelId == AppCacheDao.OTHER_LABEL_ID) {
+				labelId = LabelShortcut.OTHER_APPS;
+			}
+
 			switch (item.getItemId()) {
 			case MENU_ITEM_RENAME:
 				textEntryDialog.setDefaultValue(labelName);
