@@ -4,14 +4,14 @@ Apps2Org fork by willemw12
 
 Apps2Org in a newer user interface (UI).
 
-Requirements: Android 5.0 (SDK 21) or higher.
+Requirements: Android 6.0 (SDK 23) or higher.
 
 Get the APK from the [release](https://github.com/willemw12/apps2org/releases) page.
 
 Known issues:
 
 * The Apps and Labels lists are not immediately updated (caused by removal of some depreceated code).
-* Files exported to Google Drive are empty files.
+* Files exported to Google Drive are empty.
 
 The changes of this fork are on the "ui" git branch (git checkout ui).
 

@@ -1,14 +1,14 @@
 //import android.os.Build
 apply plugin: 'com.android.application'
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 28
+    buildToolsVersion "28.0.3"
     defaultConfig {
         applicationId "com.google.code.appsorganizer"
-        minSdkVersion 21
-        targetSdkVersion 25
-        versionCode 1
-        versionName "1.6.1 (willemw12's fork)"
+        minSdkVersion 23
+        targetSdkVersion 28
+        versionCode 2
+        versionName "1.6.2 (willemw12's fork)"
     }
     buildTypes {
         release {
