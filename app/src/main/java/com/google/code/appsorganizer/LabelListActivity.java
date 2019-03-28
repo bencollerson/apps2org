@@ -355,11 +355,9 @@ public class LabelListActivity extends ExpandableListActivityWithDialog implemen
 				break;
 			case MENU_ITEM_ADD_TO_HOME:
 				int icon = c.getInt(2);
-                Intent result = ShortcutCreator.createIntent(this, labelId, labelName,
+                ShortcutCreator.requestPinShortcut(this, labelId, labelName,
                             c.isNull(3) ? null : c.getBlob(3),
                             icon > 0 ? Label.convertToIcon(icon) : R.drawable.icon_default);
-				result.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
-				sendBroadcast(result);
 				break;
 			}
 		}

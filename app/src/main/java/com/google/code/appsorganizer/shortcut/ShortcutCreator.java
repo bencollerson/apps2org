@@ -20,12 +20,13 @@ package com.google.code.appsorganizer.shortcut;
 
 import android.app.Activity;
 import android.app.ListActivity;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Parcelable;
+import android.support.v4.content.pm.ShortcutInfoCompat;
+import android.support.v4.content.pm.ShortcutManagerCompat;
+import android.support.v4.graphics.drawable.IconCompat;
 import android.view.View;
 import android.widget.AdapterView;
 
@@ -40,11 +41,15 @@ import java.util.List;
  * @author fabio
  * 
  */
+//public class ShortcutCreator extends AppCompatActivity {
 public class ShortcutCreator extends ListActivity {
+
+	//private ListView listView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		//listView = findViewById(R.id.labelList);
 		showCreateShortcutView();
 	}
 
@@ -54,49 +59,50 @@ public class ShortcutCreator extends ListActivity {
 		labels.add(1, new Label(LabelShortcut.ALL_STARRED_ID, getString(R.string.Starred_apps), R.drawable.favorites));
 		labels.add(2, new Label(LabelShortcut.OTHER_APPS, getString(R.string.other_label), 0));
 		setTitle(R.string.choose_labels_for_shortcut);
+		//listView.setAdapter(...
 		setListAdapter(new ArrayAdapterSmallRow<Label>(this, android.R.layout.simple_list_item_1, labels));
 
+		//listView.setOnItemClickListener(...
 		getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			public void onItemClick(AdapterView<?> arg0, View v, int pos, long arg3) {
 				Label labelObject = labels.get(pos);
-				setupShortcut(labelObject);
+				setupShortcut(labelObject.getId(), labelObject.getName(), labelObject.getImageBytes(), labelObject.getIcon());
 				finish();
 			}
 		});
 	}
 
-	private void setupShortcut(Label label) {
-		Intent intent = createIntent(this, label.getId(), label.getName(), label.getImageBytes(), label.getIcon());
-		setResult(LabelShortcut.RESULT_OK, intent);
+	private void setupShortcut(Long id, String name, byte[] imageBytes, int icon) {
+		ShortcutManagerCompat shortcutManager = getSystemService(ShortcutManagerCompat.class);
+		if (shortcutManager.isRequestPinShortcutSupported(this)) {
+			Intent shortcutIntent = createOpenLabelIntent(this, id);
+			ShortcutInfoCompat shortcutInfo = new ShortcutInfoCompat.Builder(this, "id1")
+					.setShortLabel(name)
+					.setIcon(imageBytes != null ? IconCompat.createWithData(imageBytes, 0, imageBytes.length) :
+												  IconCompat.createWithResource(this, icon))
+					.setIntent(shortcutIntent)
+					.build();
+			Intent pinnedShortcutCallbackIntent = shortcutManager.createShortcutResultIntent(this, shortcutInfo);
+
+			setResult(LabelShortcut.RESULT_OK, pinnedShortcutCallbackIntent);
+		}
 	}
 
-	public static Intent createIntent(Activity a, Long id, String name, byte[] imageBytes, int icon) {
-		Intent shortcutIntent = createOpenLabelIntent(a, id);
+	public static void requestPinShortcut(Activity a, Long id, String name, byte[] imageBytes, int icon) {
+		ShortcutManagerCompat shortcutManager = a.getSystemService(ShortcutManagerCompat.class);
+		if (shortcutManager.isRequestPinShortcutSupported(a)) {
+			Intent shortcutIntent = createOpenLabelIntent(a, id);
+			ShortcutInfoCompat shortcutInfo = new ShortcutInfoCompat.Builder(a, "id1")
+					.setShortLabel(name)
+					.setIcon(imageBytes != null ? IconCompat.createWithData(imageBytes, 0, imageBytes.length) :
+												  IconCompat.createWithResource(a, icon))
+					.setIntent(shortcutIntent)
+					.build();
+			Intent pinnedShortcutCallbackIntent = shortcutManager.createShortcutResultIntent(a, shortcutInfo);
 
-		Intent intent = new Intent();
-		intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
-		intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, name);
-
-		if (imageBytes != null) {
-            ////intent.putExtra(Intent.EXTRA_SHORTCUT_ICON, BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length));
-
-            //DisplayMetrics dm = new DisplayMetrics();
-            //a.getWindowManager().getDefaultDisplay().getMetrics(dm);
-            //final float density = dm.density;
-            //final int iconSize = (int)(64 * density);
-            //
-            //ActivityManager am = (ActivityManager) a.getSystemService(Context.ACTIVITY_SERVICE);
-            //final int iconSize = am.getLauncherLargeIconSize();
-
-            Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-            //if (bitmap.getWidth() != iconSize || bitmap.getHeight() != iconSize) { }
-            //bitmap = Bitmap.createScaledBitmap(bitmap, iconSize, iconSize, false);
-			intent.putExtra(Intent.EXTRA_SHORTCUT_ICON, bitmap);
-		} else {
-			Parcelable iconResource = Intent.ShortcutIconResource.fromContext(a, icon);
-			intent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, iconResource);
+			PendingIntent successCallback = PendingIntent.getBroadcast(a, /* request code */ 0, pinnedShortcutCallbackIntent, /* flags */ 0);
+			shortcutManager.requestPinShortcut(a, shortcutInfo, successCallback.getIntentSender());
 		}
-		return intent;
 	}
 
 	public static Intent createOpenLabelIntent(Context a, Long id) {
