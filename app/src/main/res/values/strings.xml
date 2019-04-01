@@ -80,7 +80,14 @@
 	<string name="choose_app">Choose app</string>
 	<string name="Android_Image_Gallery">Android Image Gallery</string>
 	<string name="Change_log">Change log</string>
-	<string name="Change_log_text">1.5.19\n
+	<string name="Change_log_text">1.6.2\n
+	Add support for creating home screen shortcuts on Android 8 and higher\n
+	Add support for adaptive icons on Android 8 and higher\n
+1.6.1\n
+	Fix displaying apps in "Other apps" shortcut\n
+	Update the user interface\n
+...
+1.5.19\n
 	Traditional Chinese translation\n
 1.5.18\n
 	Bug fixing\n
