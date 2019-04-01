@@ -33,6 +33,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
 
 import com.google.code.appsorganizer.db.AppCacheDao;
 import com.google.code.appsorganizer.db.DatabaseHelper;
@@ -81,6 +82,17 @@ public class ApplicationInfoManager {
 		handler.sendMessage(message);
 	}
 
+	// Convert AdaptiveIconDrawable (Android 8.0, API level 26), BitmapDrawable
+	// https://stackoverflow.com/questions/44447056/convert-adaptiveicondrawable-to-bitmap-in-android-o-preview
+	@NonNull
+	private static Bitmap getBitmapFromDrawable(@NonNull Drawable drawable) {
+		final Bitmap bmp = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+		final Canvas canvas = new Canvas(bmp);
+		drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+		drawable.draw(canvas);
+		return bmp;
+	}
+
 	private static String loadAppLabel(Context context, ComponentInfo a, boolean discardCache,
                                        AppCacheDao appCacheDao, AppCache loadedObj,
 			                           StringBuffer installedIds) {
@@ -105,25 +117,23 @@ public class ApplicationInfoManager {
 		}
 		if (image == null || discardCache) {
 			Drawable drawable = a.loadIcon(pm);
-			if (drawable instanceof BitmapDrawable) {
-				Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
-				int width = bitmap.getWidth();
-				int height = bitmap.getHeight();
-                ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-                final int ICON_SIZE = am.getLauncherLargeIconSize();
-                if (width > ICON_SIZE || height > ICON_SIZE) {
-                    bitmap = scaleImage(res, bitmap, ICON_SIZE, width, height);
-				}
-				ByteArrayOutputStream os = new ByteArrayOutputStream();
-				boolean compressed = bitmap.compress(CompressFormat.PNG, 100, os);
-				if (!compressed) {
-					bitmap = Bitmap.createScaledBitmap(bitmap, width, height, true);
-					os = new ByteArrayOutputStream();
-					compressed = bitmap.compress(CompressFormat.PNG, 100, os);
-				}
-				image = os.toByteArray();
-				changed = true;
+			Bitmap bitmap = getBitmapFromDrawable(drawable);
+			int width = bitmap.getWidth();
+			int height = bitmap.getHeight();
+            ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+            final int ICON_SIZE = am.getLauncherLargeIconSize();
+            if (width > ICON_SIZE || height > ICON_SIZE) {
+                bitmap = scaleImage(res, bitmap, ICON_SIZE, width, height);
 			}
+			ByteArrayOutputStream os = new ByteArrayOutputStream();
+			boolean compressed = bitmap.compress(CompressFormat.PNG, 100, os);
+			if (!compressed) {
+				bitmap = Bitmap.createScaledBitmap(bitmap, width, height, true);
+				os = new ByteArrayOutputStream();
+				compressed = bitmap.compress(CompressFormat.PNG, 100, os);
+			}
+			image = os.toByteArray();
+			changed = true;
 		}
 		if (changed) {
 			// if label is not in cache table
