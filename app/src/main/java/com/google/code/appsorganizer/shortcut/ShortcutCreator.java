@@ -76,7 +76,7 @@ public class ShortcutCreator extends ListActivity {
 		ShortcutManagerCompat shortcutManager = getSystemService(ShortcutManagerCompat.class);
 		if (shortcutManager.isRequestPinShortcutSupported(this)) {
 			Intent shortcutIntent = createOpenLabelIntent(this, id);
-			ShortcutInfoCompat shortcutInfo = new ShortcutInfoCompat.Builder(this, "id1")
+			ShortcutInfoCompat shortcutInfo = new ShortcutInfoCompat.Builder(this, Long.toString(id))
 					.setShortLabel(name)
 					.setIcon(imageBytes != null ? IconCompat.createWithData(imageBytes, 0, imageBytes.length) :
 												  IconCompat.createWithResource(this, icon))
@@ -92,7 +92,7 @@ public class ShortcutCreator extends ListActivity {
 		ShortcutManagerCompat shortcutManager = a.getSystemService(ShortcutManagerCompat.class);
 		if (shortcutManager.isRequestPinShortcutSupported(a)) {
 			Intent shortcutIntent = createOpenLabelIntent(a, id);
-			ShortcutInfoCompat shortcutInfo = new ShortcutInfoCompat.Builder(a, "id1")
+			ShortcutInfoCompat shortcutInfo = new ShortcutInfoCompat.Builder(a, Long.toString(id))
 					.setShortLabel(name)
 					.setIcon(imageBytes != null ? IconCompat.createWithData(imageBytes, 0, imageBytes.length) :
 												  IconCompat.createWithResource(a, icon))
