@@ -16,7 +16,7 @@ Get the APK from the [release](https://github.com/willemw12/apps2org/releases) p
 
 Known issues:
 
-* The Apps and Labels lists are not immediately updated (caused by removal of some depreceated code).
+* The Apps and Labels lists are not immediately updated (caused by removal of some deprecated code).
 * Files exported to Google Drive are empty.
 
 The changes of this fork are on the "ui" git branch (git checkout ui).
