@@ -12,7 +12,7 @@ Apps2Org in a newer user interface (UI).
 
 Requirements: Android 6.0 (SDK 23) or higher.
 
-Get the APK from the [release](https://github.com/willemw12/apps2org/releases) page.
+Get the APK file from the [release](https://github.com/willemw12/apps2org/releases) page.
 
 Known issues:
 
