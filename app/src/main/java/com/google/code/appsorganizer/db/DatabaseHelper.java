@@ -23,6 +23,7 @@ import android.content.Context;
 public class DatabaseHelper extends DatabaseHelperBasic {
 
 	public final AppLabelDao appsLabelDao;
+	public final NestedLabelDao nestedLabelDao;
 	public final LabelDao labelDao;
 	public final AppCacheDao appCacheDao;
 
@@ -49,9 +50,11 @@ public class DatabaseHelper extends DatabaseHelperBasic {
 		super(context);
 		labelDao = new LabelDao();
 		appsLabelDao = new AppLabelDao();
+		nestedLabelDao = new NestedLabelDao();
 		appCacheDao = new AppCacheDao();
 		labelDao.setDb(db);
 		appsLabelDao.setDb(db);
+		nestedLabelDao.setDb(db);
 		appCacheDao.setDb(db);
 	}
 

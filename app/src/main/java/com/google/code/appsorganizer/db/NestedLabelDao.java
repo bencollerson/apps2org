@@ -21,37 +21,33 @@ package com.google.code.appsorganizer.db;
 import android.content.ContentValues;
 import android.database.Cursor;
 
-import com.google.code.appsorganizer.model.AppLabel;
+import com.google.code.appsorganizer.model.NestedLabel;
 
-public class AppLabelDao extends ObjectWithIdDao<AppLabel> {
+public class NestedLabelDao extends ObjectWithIdDao<NestedLabel> {
 
-	public static final String APP_COL_NAME = "app";
+	private static final String OBJECT_LABEL_ID_COL_NAME = "id_object_label";
+	private static final String APPLIED_LABEL_ID_COL_NAME = "id_applied_label";
 
-	private static final String LABEL_ID_COL_NAME = "id_label";
+	public static final String TABLE_NAME = "nested_labels";
 
-	public static final String PACKAGE_NAME_COL_NAME = "package";
+	private static final String[] COLS_STRING = new String[] { ID_COL_NAME, OBJECT_LABEL_ID_COL_NAME, APPLIED_LABEL_ID_COL_NAME };
 
-	public static final String TABLE_NAME = "apps_labels";
+	public static final DbColumns OBJECT_LABEL_ID = new DbColumns(OBJECT_LABEL_ID_COL_NAME, "integer not null");
+	public static final DbColumns APPLIED_LABEL_ID = new DbColumns(APPLIED_LABEL_ID_COL_NAME, "integer not null");
 
-	private static final String[] COLS_STRING = new String[] { ID_COL_NAME, APP_COL_NAME, LABEL_ID_COL_NAME, PACKAGE_NAME_COL_NAME };
+	private static final DbColumns[] DB_COLUMNS = new DbColumns[] { ID, OBJECT_LABEL_ID, APPLIED_LABEL_ID };
 
-	public static final DbColumns APP = new DbColumns(APP_COL_NAME, "text not null");
-	public static final DbColumns LABEL_ID = new DbColumns(LABEL_ID_COL_NAME, "integer not null");
-	public static final DbColumns PACKAGE = new DbColumns(PACKAGE_NAME_COL_NAME, "text null");
-
-	private static final DbColumns[] DB_COLUMNS = new DbColumns[] { ID, APP, LABEL_ID, PACKAGE };
-
-	AppLabelDao() {
+	NestedLabelDao() {
 		super(TABLE_NAME);
 		columns = DB_COLUMNS;
 	}
 
-	public long merge(String packageName, String app, long labelId) {
-		Cursor c = db.query(TABLE_NAME, new String[] { ID_COL_NAME }, APP_COL_NAME + "=? and " + PACKAGE_NAME_COL_NAME + "=? and "
-				+ LABEL_ID_COL_NAME + "=?", new String[] { app, packageName, Long.toString(labelId) }, null, null, null);
+	public long merge(long objectLableId, long appliedLabelId) {
+		Cursor c = db.query(TABLE_NAME, new String[] { ID_COL_NAME }, OBJECT_LABEL_ID_COL_NAME + "= ? and "
+				+ APPLIED_LABEL_ID_COL_NAME + "= ?", new String[] { Long.toString(objectLableId), Long.toString(appliedLabelId) }, null, null, null);
 		try {
 			if (!c.moveToNext()) {
-				return insert(packageName, app, labelId);
+				return insert(objectLableId, appliedLabelId);
 			} else {
 				return -1;
 			}
@@ -60,40 +56,37 @@ public class AppLabelDao extends ObjectWithIdDao<AppLabel> {
 		}
 	}
 
-	public long insert(String packageName, String app, long labelId) {
+	public long insert(long objectLableId, long appliedLabelId) {
 		ContentValues v = new ContentValues();
-		v.put(APP_COL_NAME, app);
-		v.put(LABEL_ID_COL_NAME, labelId);
-		v.put(PACKAGE_NAME_COL_NAME, packageName);
+		v.put(OBJECT_LABEL_ID_COL_NAME, objectLableId);
+		v.put(APPLIED_LABEL_ID_COL_NAME, appliedLabelId);
 		return db.insert(name, null, v);
 	}
 
 	@Override
-	protected AppLabel createObject(Cursor c) {
-		AppLabel t = new AppLabel();
+	protected NestedLabel createObject(Cursor c) {
+		NestedLabel t = new NestedLabel();
 		t.setId(c.getLong(0));
-		t.setApp(c.getString(1));
-		t.setLabelId(c.getLong(2));
-		t.setPackageName(c.getString(3));
+		t.setObjectLabelId(c.getLong(1));
+		t.setAppliedLabelId(c.getLong(2));
 		return t;
 	}
 
-	public int delete(String packageName, String appName, Long labelId) {
-		return db.delete(name, LABEL_ID_COL_NAME + " = ? and " + APP_COL_NAME + " = ? and " + PACKAGE_NAME_COL_NAME + "=?", new String[] {
-				labelId.toString(), appName, packageName });
+	public int delete(Long objectLableId, Long appliedLabelId) {
+		return db.delete(name, OBJECT_LABEL_ID_COL_NAME + " = ? and " + APPLIED_LABEL_ID_COL_NAME + " = ?",
+				new String[] { objectLableId.toString(), appliedLabelId.toString() });
 	}
 
-	public int deleteAppsOfLabel(Long labelId) {
-		return db.delete(name, LABEL_ID_COL_NAME + " = ?", new String[] { labelId.toString() });
+	public int deleteNestedLabels(Long appliedLabelId) {
+		return db.delete(name, APPLIED_LABEL_ID_COL_NAME + " = ?", new String[] { appliedLabelId.toString() });
 	}
 
 	@Override
-	protected ContentValues createContentValue(AppLabel obj) {
+	protected ContentValues createContentValue(NestedLabel obj) {
 		ContentValues v = new ContentValues();
 		v.put(ID_COL_NAME, obj.getId());
-		v.put(APP_COL_NAME, obj.getApp());
-		v.put(LABEL_ID_COL_NAME, obj.getLabelId());
-		v.put(PACKAGE_NAME_COL_NAME, obj.getPackageName());
+		v.put(OBJECT_LABEL_ID_COL_NAME, obj.getObjectLabelId());
+		v.put(APPLIED_LABEL_ID_COL_NAME, obj.getAppliedLabelId());
 		return v;
 	}
 
@@ -101,24 +94,9 @@ public class AppLabelDao extends ObjectWithIdDao<AppLabel> {
 		return getCreateTableScript(TABLE_NAME, DB_COLUMNS);
 	}
 
-	public void removeUninstalledApps(boolean[] installedApps, String[] appNames) {
-		for (int i = 0; i < installedApps.length; i++) {
-			if (!installedApps[i]) {
-				String a = appNames[i];
-				int ind = a.indexOf(AppCacheMap.SEPARATOR);
-				db.delete(TABLE_NAME, APP_COL_NAME + " = ? and " + PACKAGE_NAME_COL_NAME + "=?", new String[] { a.substring(ind + 1),
-						a.substring(0, ind) });
-			}
-		}
-	}
-
-	public void removePackage(String packageName) {
-		db.delete(TABLE_NAME, PACKAGE_NAME_COL_NAME + "=?", new String[] { packageName });
-	}
-
-	public String getLabelListString(String packageName, String name) {
-		Cursor c = db.rawQuery("select l.label from labels l inner join apps_labels al "
-				+ "on l._id = al.id_label where al.package = ? and al.app = ? order by upper(l.label)", new String[] { packageName, name });
+	public String getLabelListString(Long appliedLabelId) {
+		Cursor c = db.rawQuery("select l.label from labels l inner join nested_labels nl "
+				+ "on l._id = nl.id_applied_label where nl.id_applied_label = ? order by upper(l.label)", new String[] { appliedLabelId.toString() });
 		StringBuilder b = new StringBuilder();
 		try {
 			while (c.moveToNext()) {
