@@ -48,11 +48,11 @@ public class ApplicationInfoManager {
 	private ApplicationInfoManager() {
 	}
 
-    public static void reloadAll(Context context, DatabaseHelper dbHelper, Handler handler, boolean discardCache, String packageToReload) {
+	public static void reloadAll(Context context, DatabaseHelper dbHelper, Handler handler, boolean discardCache, String packageToReload) {
         PackageManager pm = context.getPackageManager();
 		AppCacheDao appCacheDao = dbHelper.appCacheDao;
 		synchronized (ApplicationInfoManager.class) {
-            appCacheDao.fixDuplicateApps();
+			appCacheDao.fixDuplicateApps();
 			StringBuffer installedIds = new StringBuffer("-1");
 			List<ResolveInfo> installedApplications = getAllResolveInfo(pm);
 
@@ -93,9 +93,14 @@ public class ApplicationInfoManager {
 		return bmp;
 	}
 
-	private static String loadAppLabel(Context context, ComponentInfo a, boolean discardCache,
-                                       AppCacheDao appCacheDao, AppCache loadedObj,
-			                           StringBuffer installedIds) {
+	private static String loadAppLabel(
+			Context context,
+			ComponentInfo a,
+			boolean discardCache,
+			AppCacheDao appCacheDao,
+			AppCache loadedObj,
+			StringBuffer installedIds
+			) {
         Resources res = context.getResources();
         PackageManager pm = context.getPackageManager();
 		boolean changed = false;
